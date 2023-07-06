@@ -53,14 +53,17 @@ private:
 
 		if (longLength == shortLength)
 		{
-			return 60;
+			return MAX_LENGTH_SCORE;
 		}
 
 		if(longLength > shortLength * 2)
 		{
-			return 0;
+			return MIX_LENGTH_SCORE;
 		}
 
 		return getPartialLengthPonint(longLength, shortLength);
-	}	
+	}
+
+	const int MAX_LENGTH_SCORE = 60;
+	const int MIX_LENGTH_SCORE = 0;
 };
