@@ -8,7 +8,7 @@ class StringSimilar
 public:
 	int GetScoreWithLength(const vector<string>& strs)
 	{
-		assertIllegalArgument(strs);
+		assertIllegalArgument(strs);		
 
 		return getScore(strs[0], strs[1]);
 	}
@@ -22,34 +22,45 @@ public:
 	}
 
 private:
-	int getScore(string str1, string str2)
+	size_t getLongLength(string str1, string str2)
 	{
-		size_t longLength;
-		size_t shortLength;
-
 		if (str1.length() >= str2.length())
 		{
-			longLength = str1.length();
-			shortLength = str2.length();
+			return str1.length();
 		}
-		else
-		{
-			longLength = str2.length();
-			shortLength = str1.length();
-		}
+		return str2.length();
+	}
 
-		if (str1.length() == str2.length())
+	size_t getShortLength(string str1, string str2)
+	{
+		if (str1.length() >= str2.length())
+		{
+			return str2.length();
+		}
+		return str1.length();
+	}
+
+	int getPartialLengthPonint(size_t longLength, size_t shortLength)
+	{
+		size_t gap = longLength - shortLength;
+		return (int)((1 - ((double)gap / shortLength)) * 60);
+	}
+
+	int getScore(string str1, string str2)
+	{
+		size_t longLength = getLongLength(str1, str2);
+		size_t shortLength = getShortLength(str1, str2);
+
+		if (longLength == shortLength)
 		{
 			return 60;
 		}
-		else if(longLength > shortLength * 2)
+
+		if(longLength > shortLength * 2)
 		{
 			return 0;
 		}
-		else
-		{
-			size_t gap = longLength - shortLength;
-			return (int)((1 - ((double)gap / shortLength)) * 60);
-		}		
+
+		return getPartialLengthPonint(longLength, shortLength);
 	}	
 };
